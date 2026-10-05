@@ -1,0 +1,21 @@
+{
+  "name": "is-this-a-twilio-number",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --env-file=.env --watch src/server.js",
+    "check": "node --env-file=.env scripts/check-number.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@azure/data-tables": "13.3.2",
+    "@azure/identity": "4.13.3",
+    "express": "5.2.1",
+    "libphonenumber-js": "1.13.14"
+  }
+}

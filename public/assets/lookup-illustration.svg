@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 430" fill="none" aria-hidden="true">
+  <defs>
+    <filter id="card-shadow" x="-20%" y="-25%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#61101E" flood-opacity=".26"/>
+    </filter>
+    <linearGradient id="paper" x1="157" y1="133" x2="510" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFF5F6"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="296" cy="218" r="199" stroke="#FFFFFF" stroke-opacity=".18" stroke-width="1.5"/>
+  <circle cx="296" cy="218" r="153" stroke="#FFFFFF" stroke-opacity=".13" stroke-width="1.5"/>
+  <path d="M19 270C67 236 103 240 142 277M474 42C515 57 541 84 551 123" stroke="#FFFFFF" stroke-opacity=".28" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 9"/>
+
+  <g filter="url(#card-shadow)">
+    <rect x="29" y="62" width="282" height="119" rx="19" fill="#FFFFFF"/>
+    <rect x="29.75" y="62.75" width="280.5" height="117.5" rx="18.25" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="1.5"/>
+  </g>
+  <rect x="53" y="86" width="71" height="5" rx="2.5" fill="#EF223A"/>
+  <text x="53" y="114" fill="#596272" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">PHONE NUMBER</text>
+  <text x="53" y="155" fill="#1E2837" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" letter-spacing="2">+ ••• ••• ••••</text>
+
+  <path d="M307 161C334 162 342 173 345 193" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 8"/>
+  <path d="M337 188L345 198L351 186" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g filter="url(#card-shadow)">
+    <rect x="146" y="201" width="383" height="181" rx="21" fill="url(#paper)"/>
+  </g>
+  <rect x="146" y="201" width="383" height="6" rx="3" fill="#EF223A"/>
+  <text x="171" y="244" fill="#8A2030" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.2">CARRIER RECORD</text>
+  <rect x="171" y="262" width="333" height="1" fill="#E5D7DB"/>
+  <text x="171" y="296" fill="#687181" font-family="Arial, Helvetica, sans-serif" font-size="13">Carrier name</text>
+  <rect x="345" y="281" width="140" height="19" rx="9.5" fill="#F3DDE2"/>
+  <rect x="345" y="281" width="87" height="19" rx="9.5" fill="#EB9BA9"/>
+  <rect x="171" y="312" width="333" height="1" fill="#E5D7DB"/>
+  <text x="171" y="347" fill="#687181" font-family="Arial, Helvetica, sans-serif" font-size="13">Line type</text>
+  <rect x="345" y="332" width="102" height="19" rx="9.5" fill="#E4E7EB"/>
+
+</svg>

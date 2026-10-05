@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Check JavaScript syntax
+        run: |
+          for file in src/*.js public/*.js scripts/*.mjs; do
+            node --check "$file"
+          done
+      - name: Run tests
+        run: npm test
+
+  security:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Scan repository history for committed secrets
+        run: |
+          docker run --rm --volume "$PWD:/repo:ro" \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 \
+            detect --source=/repo --redact --verbose
+
+  Validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [test, security]
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Require every check to pass
+        run: |
+          echo "test: ${{ needs.test.result }}"
+          echo "security: ${{ needs.security.result }}"
+          if [ "${{ needs.test.result }}" != success ] || \
+             [ "${{ needs.security.result }}" != success ]; then
+            echo "::error::Required checks did not pass"
+            exit 1
+          fi

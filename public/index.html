@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#d41733" />
+    <meta
+      name="description"
+      content="Check a US or international phone number for a Twilio carrier signal, with a clear explanation of what the result means."
+    />
+    <title>Is this a Twilio number? | Independent carrier check</title>
+    <link rel="icon" type="image/svg+xml" href="assets/twilio-bug.svg" />
+    <link rel="stylesheet" href="styles.css?v=7" />
+    <script src="app.js?v=5" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#main"><img class="brand-mark" src="assets/twilio-bug.svg" width="32" height="32" alt="" />Twilio carrier check</a>
+        <div class="header-right">
+          <a class="header-link" href="#understanding">How results work</a>
+          <span class="independent-label">Independent lookup</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <h1 id="page-title">Is this a Twilio number?</h1>
+            <p class="hero-intro">Look up a US or international number to see if its carrier record names Twilio.</p>
+          </div>
+          <div class="hero-graphic" aria-hidden="true">
+            <img src="assets/lookup-illustration.svg" width="560" height="430" alt="" />
+          </div>
+        </div>
+      </section>
+
+      <div class="main-inner">
+        <section class="lookup-card" aria-labelledby="lookup-heading">
+          <div class="lookup-header">
+            <div>
+              <h2 id="lookup-heading">Enter a number</h2>
+            </div>
+          </div>
+
+          <div id="preview-notice" class="preview-notice" role="note" hidden>
+            <span class="preview-symbol" aria-hidden="true">i</span>
+            <p><strong>File preview only.</strong> This view shows the design, but cannot run lookups. Follow the setup in the README, start the app, and open its local address.</p>
+          </div>
+
+          <form id="lookup-form" novalidate>
+            <label for="phone-number">Phone number</label>
+            <div class="form-row">
+              <input
+                id="phone-number"
+                name="phoneNumber"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                spellcheck="false"
+                maxlength="40"
+                placeholder="+1 415 555 0123"
+                aria-describedby="number-hint privacy-hint"
+                required
+              />
+              <button id="check-button" type="submit"><span id="button-label">Check number</span></button>
+            </div>
+            <div class="form-help">
+              <p id="number-hint">For international numbers, include + and the country code. US numbers can be 10 digits.</p>
+              <p id="privacy-hint">This number is sent to Twilio for the check.</p>
+            </div>
+          </form>
+
+          <div id="result" class="result" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+        </section>
+
+        <section class="understanding" id="understanding" aria-labelledby="understanding-heading">
+          <div class="understanding-intro">
+            <p class="section-label">Understanding the result</p>
+            <h2 id="understanding-heading">What the carrier record can tell you</h2>
+            <p>Each result describes the carrier name returned by Lookup. Carrier data alone cannot confirm who currently hosts a number.</p>
+            <a href="https://www.twilio.com/docs/lookup/v2-api/line-type-intelligence">Read about the carrier data <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="outcome-list" aria-label="Possible results">
+            <div class="outcome-row">
+              <span class="outcome-icon outcome-positive" aria-hidden="true"></span>
+              <div><h3>Twilio appears in carrier data</h3><p>Lookup returned a carrier name containing Twilio. This is a clue, not proof that Twilio hosts the number.</p></div>
+            </div>
+            <div class="outcome-row">
+              <span class="outcome-icon outcome-neutral" aria-hidden="true"></span>
+              <div><h3>Another carrier appears</h3><p>Lookup returned a different carrier. The number may still use Twilio services.</p></div>
+            </div>
+            <div class="outcome-row">
+              <span class="outcome-icon outcome-unknown" aria-hidden="true"></span>
+              <div><h3>No carrier name returned</h3><p>Lookup returned no usable carrier name, so there is no carrier signal to assess.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="sms-option" aria-labelledby="sms-heading">
+          <div class="sms-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false"><path d="M9 11h30v22H21l-8 6v-6H9V11Z" /><path d="M17 19h14M17 25h9" /></svg>
+          </div>
+          <div>
+            <h2 id="sms-heading">Checking a US number?</h2>
+            <p>Twilio also offers a text-based checker. Send the 10-digit number to <a href="sms:+18557477626">+1 855-747-7626</a>. <a href="https://www.twilio.com/en-us/phone-numbers">See Twilio’s instructions <span aria-hidden="true">↗</span></a></p>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>© <span id="year">2026</span> Independent carrier check</p>
+        <p>Twilio and all related logos are trademarks of Twilio Inc. or its affiliates. This independent site is not affiliated with or endorsed by Twilio.</p>
+        <p>Public checks are rate limited. No analytics or tracking scripts are used.</p>
+      </div>
+    </footer>
+  </body>
+</html>
