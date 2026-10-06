@@ -48,7 +48,7 @@ test('limits one IP per UTC hour while allowing another visitor', async () => {
   const table = new FakeTable();
   const quota = limiter(table);
 
-  assert.equal((await quota.reserve('198.51.100.7')).allowed, true);
+  assert.deepEqual(await quota.reserve('198.51.100.7'), { allowed: true, day: '2026-10-05' });
   assert.equal((await quota.reserve('198.51.100.7')).allowed, true);
   assert.deepEqual(await quota.reserve('198.51.100.7'), {
     allowed: false,

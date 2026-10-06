@@ -97,7 +97,7 @@ export function createQuotaLimiter({
               total: 1,
               ipHourCounts: JSON.stringify({ [ipHourKey]: 1 }),
             });
-            return { allowed: true };
+            return { allowed: true, day };
           } catch (error) {
             if (!hasStatus(error, 409)) throw error;
           }
@@ -127,7 +127,7 @@ export function createQuotaLimiter({
               total: current.total + 1,
               ipHourCounts,
             }, 'Replace', { etag: current.etag });
-            return { allowed: true };
+            return { allowed: true, day };
           } catch (error) {
             if (!hasStatus(error, 412)) throw error;
           }

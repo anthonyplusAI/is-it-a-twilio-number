@@ -1,5 +1,7 @@
 import { createApp } from './app.js';
+import { createAdminAuth } from './admin-auth.js';
 import { createTwilioLookup } from './lookup.js';
+import { createMetricsStore } from './metrics.js';
 import { createQuotaLimiter, createTableClientFromEnv } from './quota.js';
 import { createReadinessProbe } from './readiness.js';
 
@@ -15,6 +17,7 @@ try {
   const twilioKeySid = process.env.TWILIO_API_KEY_SID;
   const twilioKeySecret = process.env.TWILIO_API_KEY_SECRET;
   const hashSecret = process.env.IP_HASH_SECRET;
+  const dailyLimit = configuredLimit('MAX_LOOKUPS_PER_DAY', 100);
 
   if (process.env.NODE_ENV === 'production'
     && (!tableClient || !twilioKeySid || !twilioKeySecret || !hashSecret)) {
@@ -27,9 +30,12 @@ try {
       tableClient,
       hashSecret,
       maxPerIpHour: configuredLimit('MAX_LOOKUPS_PER_IP_HOUR', 5),
-      maxPerDay: configuredLimit('MAX_LOOKUPS_PER_DAY', 100),
+      maxPerDay: dailyLimit,
     });
   }
+  const metricsStore = tableClient ? createMetricsStore({ tableClient }) : null;
+  const adminAuth = process.env.ADMIN_PASSWORD
+    ? createAdminAuth({ password: process.env.ADMIN_PASSWORD }) : null;
   const lookup = twilioKeySid && twilioKeySecret
     ? createTwilioLookup({ apiKeySid: twilioKeySid, apiKeySecret: twilioKeySecret })
     : null;
@@ -38,7 +44,7 @@ try {
     lookupConfigured: Boolean(quotaLimiter && lookup),
   });
 
-  const server = createApp({ quotaLimiter, lookup, readinessProbe })
+  const server = createApp({ quotaLimiter, lookup, readinessProbe, metricsStore, adminAuth, dailyLimit })
     .listen(port, '0.0.0.0', (error) => {
       if (error) {
         process.stderr.write('Startup failed: HTTP listener is unavailable.\n');
@@ -49,6 +55,6 @@ try {
     });
   process.on('SIGTERM', () => server.close());
 } catch {
-  process.stderr.write('Startup failed: lookup configuration or quota storage is unavailable.\n');
+  process.stderr.write('Startup failed: application configuration or storage is unavailable.\n');
   process.exitCode = 1;
 }

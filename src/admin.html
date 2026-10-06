@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#d41733" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Lookup activity | Twilio carrier check</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/twilio-bug.svg" />
+    <link rel="stylesheet" href="/styles.css?v=7" />
+    <link rel="stylesheet" href="/admin.css?v=1" />
+    <script src="/admin.js?v=1" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/">
+          <img class="brand-mark" src="/assets/twilio-bug.svg" width="32" height="32" alt="" />
+          Twilio carrier check
+        </a>
+        <nav class="admin-header-nav" aria-label="Page navigation">
+          <a class="admin-header-link" href="/">Open checker</a>
+          <span class="independent-label">Owner view</span>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="admin-hero" aria-labelledby="page-title">
+        <div class="admin-hero-inner">
+          <div class="admin-hero-copy">
+            <h1 id="page-title">Lookup activity</h1>
+            <p>See how many public checks were admitted and what carrier data those checks returned.</p>
+          </div>
+          <button id="refresh-button" class="admin-refresh" type="button">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M19.25 8.25A7.75 7.75 0 1 0 19.75 13" />
+              <path d="M19.25 3.75v4.5h-4.5" />
+            </svg>
+            <span id="refresh-label">Refresh data</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="admin-main-inner">
+        <section class="admin-summary" aria-label="Lookup totals" aria-busy="true">
+          <div class="admin-summary-grid">
+            <div class="admin-summary-item">
+              <p>Today</p>
+              <strong id="total-today">—</strong>
+              <span>UTC day</span>
+            </div>
+            <div class="admin-summary-item">
+              <p>Last 7 days</p>
+              <strong id="total-seven">—</strong>
+              <span>Including today</span>
+            </div>
+            <div class="admin-summary-item">
+              <p>Last 30 days</p>
+              <strong id="total-thirty">—</strong>
+              <span>Including today</span>
+            </div>
+          </div>
+          <div class="admin-limit">
+            <div class="admin-limit-copy">
+              <div>
+                <strong>Today’s public limit</strong>
+                <p>Checks admitted before a Lookup response</p>
+              </div>
+              <span id="limit-count">—</span>
+            </div>
+            <progress id="daily-progress" value="0" max="100" aria-label="Today's public lookup limit used" hidden></progress>
+          </div>
+        </section>
+
+        <p id="load-status" class="admin-status" role="status" aria-live="polite">Loading activity…</p>
+
+        <div class="admin-dashboard-grid">
+          <section class="admin-panel admin-trend" aria-labelledby="trend-heading">
+            <div class="admin-panel-heading">
+              <div>
+                <h2 id="trend-heading">Daily checks</h2>
+                <p>Admitted attempts across 30 UTC dates, including today.</p>
+              </div>
+              <span id="chart-scale" class="admin-chart-scale">—</span>
+            </div>
+            <div id="chart-viewport" class="admin-chart-viewport" role="region" aria-label="Daily checks chart; scroll horizontally on smaller screens" aria-describedby="chart-hint" tabindex="0">
+              <ol id="chart-bars" class="admin-chart-bars" aria-hidden="true"></ol>
+              <p id="chart-empty" class="admin-chart-empty" hidden>No checks recorded in this period.</p>
+            </div>
+            <p id="chart-hint" class="admin-chart-hint">For exact dates and counts, open the table below.</p>
+            <details class="admin-data-table-wrap">
+              <summary>View daily counts</summary>
+              <div class="admin-table-scroll">
+                <table>
+                  <caption>Admitted checks by UTC date</caption>
+                  <thead><tr><th scope="col">Date (UTC)</th><th scope="col">Checks</th></tr></thead>
+                  <tbody id="daily-table-body"></tbody>
+                </table>
+              </div>
+            </details>
+          </section>
+
+          <section class="admin-panel admin-outcomes" aria-labelledby="outcomes-heading">
+            <div class="admin-panel-heading">
+              <div>
+                <h2 id="outcomes-heading">Result breakdown</h2>
+                <p>Last 30 UTC dates, including today.</p>
+              </div>
+            </div>
+            <ul class="admin-outcome-list">
+              <li class="admin-outcome-item admin-outcome-twilio">
+                <div class="admin-outcome-line"><span>Twilio appears in carrier data</span><strong id="outcome-twilio_signal">—</strong></div>
+                <div class="admin-outcome-track" aria-hidden="true"><span id="outcome-bar-twilio_signal"></span></div>
+              </li>
+              <li class="admin-outcome-item admin-outcome-other">
+                <div class="admin-outcome-line"><span>Another carrier appears</span><strong id="outcome-no_signal">—</strong></div>
+                <div class="admin-outcome-track" aria-hidden="true"><span id="outcome-bar-no_signal"></span></div>
+              </li>
+              <li class="admin-outcome-item admin-outcome-unavailable">
+                <div class="admin-outcome-line"><span>No carrier name returned</span><strong id="outcome-unavailable">—</strong></div>
+                <div class="admin-outcome-track" aria-hidden="true"><span id="outcome-bar-unavailable"></span></div>
+              </li>
+              <li class="admin-outcome-item admin-outcome-failed">
+                <div class="admin-outcome-line"><span>Lookup failed</span><strong id="outcome-failed">—</strong></div>
+                <div class="admin-outcome-track" aria-hidden="true"><span id="outcome-bar-failed"></span></div>
+              </li>
+              <li class="admin-outcome-item admin-outcome-untracked">
+                <div class="admin-outcome-line"><span>Outcome untracked</span><strong id="outcome-untracked">—</strong></div>
+                <div class="admin-outcome-track" aria-hidden="true"><span id="outcome-bar-untracked"></span></div>
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <aside class="admin-explainer" aria-labelledby="counts-heading">
+          <h2 id="counts-heading">How to read these numbers</h2>
+          <div class="admin-explainer-copy">
+            <p>Counts reflect checks admitted by the public rate limit. They are not a Twilio billing report: an attempt can be counted even when Lookup later fails.</p>
+            <p>“Outcome untracked” is the gap between admitted checks and saved results, including checks made before result tracking began. A carrier name containing Twilio is a clue, not proof that Twilio currently hosts the number.</p>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>© <span id="year">2026</span> Independent carrier check</p>
+        <p>Twilio and all related logos are trademarks of Twilio Inc. or its affiliates. This independent site is not affiliated with or endorsed by Twilio.</p>
+        <p>This page shows aggregate counts, not searched phone numbers.</p>
+      </div>
+    </footer>
+  </body>
+</html>

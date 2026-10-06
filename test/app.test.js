@@ -88,6 +88,44 @@ test('returns an honest Twilio signal and normalized number', async (t) => {
   assert.equal(response.headers.get('cache-control'), 'no-store');
 });
 
+test('records only accepted lookup outcomes on the reservation UTC day', async (t) => {
+  const recorded = [];
+  let lookups = 0;
+  const baseUrl = await startApp(t, {
+    quotaLimiter: { reserve: async () => ({ allowed: true, day: '2026-10-05' }) },
+    lookup: async () => {
+      lookups += 1;
+      if (lookups === 1) return TWILIO_RESPONSE;
+      throw new Error('private provider detail');
+    },
+    metricsStore: { record: async (outcome, day) => { recorded.push([outcome, day]); } },
+  });
+
+  assert.equal((await submit(baseUrl, '+14159929960')).status, 200);
+  assert.equal((await submit(baseUrl, '+14159929960')).status, 502);
+  assert.deepEqual(recorded, [
+    ['twilio_signal', '2026-10-05'],
+    ['failed', '2026-10-05'],
+  ]);
+  assert.doesNotMatch(JSON.stringify(recorded), /14159929960/);
+});
+
+test('a slow metrics write cannot hold a completed lookup response', async (t) => {
+  const baseUrl = await startApp(t, {
+    quotaLimiter: { reserve: async () => ({ allowed: true, day: '2026-10-05' }) },
+    lookup: async () => TWILIO_RESPONSE,
+    metricsStore: { record: () => new Promise(() => {}) },
+  });
+
+  const response = await fetch(`${baseUrl}/api/check`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phoneNumber: '+14159929960' }),
+    signal: AbortSignal.timeout(1500),
+  });
+  assert.equal(response.status, 200);
+});
+
 test('invalid input is rejected before consuming quota or calling Twilio', async (t) => {
   let externalCalls = 0;
   const baseUrl = await startApp(t, {
