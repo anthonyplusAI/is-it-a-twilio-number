@@ -2,6 +2,13 @@
 
 A public checker for a phone number's **Twilio carrier signal**. Enter a US 10-digit number or an international number with its `+` country code. The server uses [Twilio Lookup v2 Line Type Intelligence](https://www.twilio.com/docs/lookup/v2-api/line-type-intelligence) to request carrier information.
 
+## Watch the film
+
+<!-- Video hosted as a GitHub user attachment. -->
+{{GITHUB_VIDEO_URL}}
+
+**A 12-second cinematic introduction.** The number and result in the film are fictional. Lookup returns a carrier signal, which is not proof of a number's current owner or service provider.
+
 ## Understanding the result
 
 | Result | Meaning |
