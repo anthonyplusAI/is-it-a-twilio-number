@@ -5,7 +5,7 @@ A public checker for a phone number's **Twilio carrier signal**. Enter a US 10-d
 ## Watch the film
 
 <!-- Video hosted as a GitHub user attachment. -->
-{{GITHUB_VIDEO_URL}}
+https://github.com/user-attachments/assets/eaf90c41-ef53-4f9a-aeb0-9f90095d96a3
 
 **A 12-second cinematic introduction.** The number and result in the film are fictional. Lookup returns a carrier signal, which is not proof of a number's current owner or service provider.
 
